@@ -85,9 +85,11 @@
         {
             $arrGetRequest=$_GET;
             $form = new Form($arrGetRequest);
-            //$formErrors=$form['hasErrors'];
-
-            if ($formErrors)
+            $jsonForm=json_encode($form);
+            $arrErrors=json_decode($jsonForm,true);
+            
+            //Look for any errors and stop process if found
+            if ($arrErrors['hasErrors']==true)
             {
                 $boolShowTable=false;
             }
