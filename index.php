@@ -18,7 +18,7 @@
 
       <h2>Vehicle Buddy</h2>
 
-      <p>Search for vehicle-specific services by address.</p>
+      <p>Search for vehicle-specific service stations by address.</p>
 
       <hr>
       <!--Main Form -->
@@ -29,7 +29,7 @@
         </div>
         <div class="form-group">
           <label for="varZipCode"><b>Zip Code</b></label>
-          <input type="text" class="form-control" id="varZipCode" name="varZipCode" placeholder="123456">
+          <input type="text" class="form-control" id="varZipCode" name="varZipCode" placeholder="123456" pattern="[0-9]{5}">
         </div>
         <div class="form-group">
           <label for="varSicCode"><b>Vehicle Service Station</b></label>
@@ -42,7 +42,7 @@
           </select>
         </div>
         <div class="form-group">
-          <label for="varSearchRadius"><b>Search Radius (miles)</b></label>
+          <label for="varSearchRadius"><b>Search Radius (1 to 10 miles)</b></label>
           <input type="number" class="form-control" id="varSearchRadius" name="varSearchRadius" min="0" max="10">
         </div>
         <input class="btn btn-success" type="submit" value="Search" style="float:right;margin:auto;">
