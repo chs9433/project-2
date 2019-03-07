@@ -1,5 +1,6 @@
 <?php error_reporting(E_ERROR); ?>
 <?php
+    //Function that queries MapQuest's Search API and returns results
     function getMapquestData($arrGetReq)
     {
         $varStreetAddress=$arrGetReq['varStreetAddress'] ?? null;
@@ -16,17 +17,15 @@
         'outFormat'=>'json',
         'key'=>$varMapquestApiKey
         );
-
         $q=http_build_query($arrData);
-
-
         $url='https://www.mapquestapi.com/search/v2/radius?'.$q;
         $arrResult = json_decode(file_get_contents($url,TRUE));
         $jsonResult=json_encode($arrResult,JSON_PRETTY_PRINT);
-        return $jsonResult;
 
+        return $jsonResult;
     }
 
+    //Function that creates HTML table with results
     function getSearchResultsTable($arrResults)
     {
         $rslt="";
@@ -60,6 +59,7 @@
         return $rslt;
     }
 
+    //Function that alters the visibility of the results table
     function getTableStyle($boolShowTbl)
     {
         if ($boolShowTbl==true)
@@ -80,19 +80,27 @@
         $boolShowTable=false;
         $tblSearchResults=null;
         $arrSearchResults=array();
-
+        $formErrors=false;
         if (isset($_GET) && !empty($_GET))
         {
             $arrGetRequest=$_GET;
-            $form = new Form();
-            $form.validate();
-            $boolShowTable=true;
-            $jsonSearchResults=getMapquestData($arrGetRequest);
-            $arrSearchResults=json_decode($jsonSearchResults,true);
-            $tblSearchResults=getSearchResultsTable($arrSearchResults);
-            $tblStyle=getTableStyle($boolShowTable);
-        }
+            $form = new Form($arrGetRequest);
+            //$formErrors=$form['hasErrors'];
 
+            if ($formErrors)
+            {
+                $boolShowTable=false;
+            }
+            else
+            {
+                $boolShowTable=true;
+                $jsonSearchResults=getMapquestData($arrGetRequest,$formErrors);
+                $arrSearchResults=json_decode($jsonSearchResults,true);
+                $tblSearchResults=getSearchResultsTable($arrSearchResults);
+                $tblStyle=getTableStyle($boolShowTable);
+            }
+
+        }
         else
         {
             $tblStyle=getTableStyle($boolShowTable);
